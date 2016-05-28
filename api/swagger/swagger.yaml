@@ -1,0 +1,130 @@
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: Movies DB
+# during dev, should point to your local machine
+host: localhost:10010
+# basePath prefixes all resource paths 
+basePath: /
+# 
+schemes:
+  # tip: remove http to make production-grade
+  - http
+  - https
+# format of bodies a client can send (Content-Type)
+consumes:
+  - application/json
+# format of the responses to the client (Accepts)
+produces:
+  - application/json
+paths:
+  /movies:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: movies
+    get:
+      description: Returns all movies from database
+      # used as the method name of the controller
+      operationId: movies
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/MoviesResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /movie/{idMovie}:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: movies
+    get:
+      description: Returns one movie by ID
+      # used as the method name of the controller
+      operationId: moviebyID
+      parameters:
+        - name: idMovie
+          in: path
+          description: ID
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/MovieResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /movie:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: movies
+    post:
+      description: Save a new movie
+      # used as the method name of the controller
+      operationId: saveMovie
+      parameters:
+        - name: data
+          in: body
+          description: body form
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/MovieResponseSave"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /swagger:
+    x-swagger-pipe: swagger_raw
+# complex objects have schema definitions
+definitions:
+  MoviesResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string
+  MovieResponseSave:
+    required:
+      - message
+    properties:
+      message:
+        type: string
+  MovieResponse:
+      required:
+        - _id
+        - title
+        - director
+        - studio
+        - mppa_rating
+        - status
+      properties:
+        _id:
+          type: string
+        title:
+          type: string
+        director:
+          type: string
+        studio:
+          type: string
+        mppa_rating:
+          type: string
+        status:
+          type: string
+  ErrorResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string
