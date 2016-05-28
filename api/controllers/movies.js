@@ -16,7 +16,9 @@ var Movies = require('../models/movie.js');
 module.exports = {
     movies: movies,
     moviebyID: moviebyID,
-    saveMovie: saveMovie
+    saveMovie: saveMovie,
+    updateMovie: updateMovie,
+    deleteMovie: deleteMovie
 };
 
 /*
@@ -71,3 +73,49 @@ function saveMovie(req, res) {
         }
     });
 }
+
+/*
+* PUT, update movie
+* */
+
+function updateMovie(req, res) {
+
+    if(typeof req.swagger.params.idMovie.value == "undefined"){
+        res.status(404).send(new Error('Movies not found'));
+    }else{
+        var id = req.swagger.params.idMovie.value;
+        var movie = req.swagger.params.data.originalValue;
+
+        Movies.model.findByIdAndUpdate(id, JSON.parse(movie), {}, function(err, movie) {
+            if (err) return next(swe.invalid('movie'));
+            if (movie) {
+                res.status(200).send({"message":"Data saved"});
+            } else {
+                res.status(404).send(new Error(err));
+            }
+        });
+    }
+}
+
+
+/*
+* DELETE, delete movie
+* */
+
+function deleteMovie(req, res) {
+
+    if(typeof req.swagger.params.idMovie.value == "undefined"){
+        res.status(404).send(new Error('Movies not found'));
+    }else{
+        var id = req.swagger.params.idMovie.value;
+
+        Movies.model.remove({_id: id}, function(err) {
+            if (!err) {
+                res.status(200).send({"message":"Data removed"});
+            }else{
+                res.status(404).send(new Error(err));
+            }
+        });
+    }
+}
+

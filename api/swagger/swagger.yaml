@@ -18,6 +18,7 @@ consumes:
 produces:
   - application/json
 paths:
+  #MOVIES
   /movies:
     # binds a127 app logic to a route
     x-swagger-router-controller: movies
@@ -60,7 +61,7 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
-  /movie:
+  /movie/save:
     # binds a127 app logic to a route
     x-swagger-router-controller: movies
     post:
@@ -80,6 +81,186 @@ paths:
           schema:
             # a pointer to a definition
             $ref: "#/definitions/MovieResponseSave"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /movie/update/{idMovie}:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: movies
+    put:
+      description: Update a movie
+      # used as the method name of the controller
+      operationId: updateMovie
+      parameters:
+        - name: idMovie
+          in: path
+          description: body form
+          required: true
+          type: string
+        - name: data
+          in: body
+          description: body form
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/MovieResponseSave"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /movie/delete/{idMovie}:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: movies
+    delete:
+      description: Delete a movie
+      # used as the method name of the controller
+      operationId: deleteMovie
+      parameters:
+        - name: idMovie
+          in: path
+          description: id
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/MovieResponseSave"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  #GENRES
+  /genres:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: genres
+    get:
+      description: Returns all genres from database
+      # used as the method name of the controller
+      operationId: genres
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/GenresResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /genre/{idGenre}:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: genres
+    get:
+      description: Returns one genre by ID
+      # used as the method name of the controller
+      operationId: genrebyID
+      parameters:
+        - name: idGenre
+          in: path
+          description: ID
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/GenreResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /genre/save:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: genres
+    post:
+      description: Save a genre movie
+      # used as the method name of the controller
+      operationId: saveGenre
+      parameters:
+        - name: data
+          in: body
+          description: body form
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/GenreResponseSave"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /genre/update/{idGenre}:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: genres
+    put:
+      description: Update a genre
+      # used as the method name of the controller
+      operationId: updateGenre
+      parameters:
+        - name: idGenre
+          in: path
+          description: body form
+          required: true
+          type: string
+        - name: data
+          in: body
+          description: body form
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/GenreResponseSave"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+
+  /genre/delete/{idGenre}:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: genres
+    delete:
+      description: Delete a genre
+      # used as the method name of the controller
+      operationId: deleteGenre
+      parameters:
+        - name: idGenre
+          in: path
+          description: id
+          required: true
+          type: string
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/GenreResponseSave"
         # responses may fall through to errors
         default:
           description: Error
@@ -119,6 +300,30 @@ definitions:
         studio:
           type: string
         mppa_rating:
+          type: string
+        status:
+          type: string
+  GenresResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string
+  GenreResponseSave:
+    required:
+      - message
+    properties:
+      message:
+        type: string
+  GenreResponse:
+      required:
+        - _id
+        - name
+        - status
+      properties:
+        _id:
+          type: string
+        name:
           type: string
         status:
           type: string
