@@ -442,9 +442,6 @@ definitions:
         - mppa_rating
         - status
         - __v
-        - genres
-        - starring
-        - supporting_actors
       properties:
         _id:
           type: string
@@ -460,12 +457,6 @@ definitions:
           type: string
         __v:
           type: number
-        genres:
-          type: array
-        starring:
-          type: array
-        supporting_actors:
-          type: array
   GenresResponse:
     required:
       - message
