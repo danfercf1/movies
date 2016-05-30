@@ -5,7 +5,24 @@ var app = require('express')();
 module.exports = app; // for testing
 
 var config = {
-  appRoot: __dirname // required config
+  appRoot: __dirname, // required config
+  swaggerSecurityHandlers: {
+    api_key: function (req, authOrSecDef, scopesOrApiKey, cb){
+
+      var Users = require('./api/models/users.js');
+
+      Users.model.findOne({'api_key': scopesOrApiKey}, 'name', function (err, api_user) {
+        if(err){
+          cb(new Error(err));
+        }
+        if(api_user){
+          cb(null);
+        }else{
+          cb(new Error('access denied!'));
+        }
+      });
+    }
+  }
 };
 
 var mongoose = require('mongoose'),
@@ -13,7 +30,7 @@ var mongoose = require('mongoose'),
     sw = require('swagger-node-express'),
     colors = require('colors'),
     swe = sw.errors,
-    config_mongo = require('./config/config'),
+    mongo_config = require('./config/config'),
     util = require('util'),
     db = mongoose.connection;
 
@@ -37,7 +54,7 @@ SwaggerExpress.create(config, function(err, swaggerExpress) {
     console.log('Database reconnected'.green);
   });
 
-  mongoose.connect(config_mongo.db_url, {server: {auto_reconnect: true}});
+  mongoose.connect(mongo_config.db_url, {server: {auto_reconnect: true}});
 
   var port = process.env.PORT || 10010;
 

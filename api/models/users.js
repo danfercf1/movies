@@ -2,21 +2,18 @@
  * Created by daniel on 26/05/2016.
  */
 /**
- * The schema and model for movie data
+ * The schema and model for user data
  */
 var mongoose = require('mongoose'),
     Schema = mongoose.Schema;
 
-var movieSchema = new mongoose.Schema({
-    title: String,
-    genres: Array,
-    director: String,
-    starring: Array,
-    supporting_actors: Array,
-    studio: String,
-    mpaa_rating: String,
+var userSchema = new mongoose.Schema({
+    name: String,
+    lastname: String,
+    api_key: String,
+    api_secret: String,
     status: String,
-    __v: Number
+    created_date: String
 });
 
 /*exports.def =
@@ -55,4 +52,4 @@ var movieSchema = new mongoose.Schema({
     }
 };*/
 
-exports.model = mongoose.model('movie', movieSchema);
+exports.model = mongoose.model('user', userSchema);
