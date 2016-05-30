@@ -439,7 +439,7 @@ definitions:
         - title
         - director
         - studio
-        - mppa_rating
+        - mpaa_rating
         - status
         - __v
       properties:
@@ -451,7 +451,7 @@ definitions:
           type: string
         studio:
           type: string
-        mppa_rating:
+        mpaa_rating:
           type: string
         status:
           type: string
